@@ -68,7 +68,11 @@ def get_death_counts(year, month, indicator):
 
     results = []
     for record in cursor:
-        results.append(record)
+        results.append({
+            "State": record["_id"]["State"], 
+            "Indicator": record["_id"]["Indicator"], 
+            "OverdoseDeathCount" : record["Death Count"]
+        })
 
     return jsonify(results)
 

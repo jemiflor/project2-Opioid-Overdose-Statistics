@@ -11,7 +11,8 @@ import json
 #################################################
 # Initialize PyMongo to work with MongoDBs
 #################################################
-conn = 'mongodb://localhost:27017'
+#conn = 'mongodb://localhost:27017'
+conn = 'mongodb+srv://bcproject2user:bcpw123@bcproject2.c8koh.mongodb.net/opioid_crisis_db?retryWrites=true&w=majority'
 client = pymongo.MongoClient(conn)
 
 

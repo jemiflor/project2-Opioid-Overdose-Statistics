@@ -7,14 +7,12 @@
 import pandas as pd
 import pymongo
 import json
+from mongodb_cloud_atlas_connection import mongo_cloud_atlas_connection_string, mongo_local_connection_string
 
 #################################################
 # Initialize PyMongo to work with MongoDBs
 #################################################
-#conn = 'mongodb://localhost:27017'
-conn = 'mongodb+srv://bcproject2user:bcpw123@bcproject2.c8koh.mongodb.net/opioid_crisis_db?retryWrites=true&w=majority'
-client = pymongo.MongoClient(conn)
-
+client = pymongo.MongoClient(mongo_cloud_atlas_connection_string)
 
 #################################################
 # Define database and collection
@@ -27,8 +25,8 @@ opioid_stats_collection = mongo_Db["opioidstats"]
 # Import data file to mongodb
 #################################################
 filename = "opioid_crisis_stats.csv"
-opioidCrisisData = pd.read_csv(filename, usecols=['State', 'Year', 'Month', 'Indicator', 'Data Value', 'State Name']);
-opioidCrisisJson = json.loads(opioidCrisisData.to_json(orient='records'));
+opioidCrisisData = pd.read_csv(filename, usecols=['State', 'Year', 'Month', 'Indicator', 'Data Value', 'State Name'])
+opioidCrisisJson = json.loads(opioidCrisisData.to_json(orient='records'))
 
 # Remove any old collection
 opioid_stats_collection.remove()

@@ -15,7 +15,7 @@ function createVisualizations(){
 // handle chart 1 filters on change event
 d3.selectAll('#chart-1-select-year, #chart-1-select-month, #chart-1-select-state')
   .on('change', function() {    
-    createChart2Visualization();
+    createChart1Visualization();
 });
 
 // handle chart 2 filters on change event

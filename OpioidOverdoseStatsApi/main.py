@@ -266,7 +266,9 @@ def get_death_counts_by_State(month, year):
             "Indicator" : {
                 "$in": [
                     "Number of Deaths",
-                    "Number of Drug Overdose Deaths"
+                    "Number of Drug Overdose Deaths",
+                    "Death Per 1000 Population",
+                    "Overdose Death Per 1000 Total Death"
                 ]
             }
         }

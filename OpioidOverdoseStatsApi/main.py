@@ -297,7 +297,7 @@ def get_death_counts_by_State(month, year):
                     "State": "$State",
                     "Indicator": "$Indicator"
                 },
-                "Death Count": { "$sum": "$Data Value" }
+                "Death Count": { "$sum": "$Data Value"}
             }
         },
         { "$sort" : { "State" : 1, "_id": 1 } }                                              
@@ -309,13 +309,26 @@ def get_death_counts_by_State(month, year):
 
     # loop through the aggregated documents (records) 
     # and build the results json list
+    # if statement to divide sum of the "per 1000" indicators
     results = []
     for record in cursor:
-        results.append({
+        if record['_id']["Indicator"] == "Death Per 1000 Population":
+            results.append({
+                "State": record["_id"]["State"], 
+                "Indicator":  record["_id"]["Indicator"], 
+                "OverdoseDeathCount" : record["Death Count"] / 72
+            })
+        elif record['_id']["Indicator"] == "Overdose Death Per 1000 Total Death":
+            results.append({
+                "State": record["_id"]["State"], 
+                "Indicator":  record["_id"]["Indicator"], 
+                "OverdoseDeathCount" : record["Death Count"] / 72
+            })
+        else:
+            results.append({
             "State": record["_id"]["State"], 
             "Indicator":  record["_id"]["Indicator"], 
-            "OverdoseDeathCount" : record["Death Count"]
-        })
+            "OverdoseDeathCount" : record["Death Count"]})
 
     # jsonify the results list and return the response
     return jsonify(results)                                             

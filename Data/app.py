@@ -24,7 +24,7 @@ opioid_stats_collection = mongo_Db["opioidstats"]
 #################################################
 # Import data file to mongodb
 #################################################
-filename = "opioid_crisis_stats.csv"
+filename = "./Data/opioid_crisis_stats.csv"
 opioidCrisisData = pd.read_csv(filename, usecols=['State', 'Year', 'Month', 'Indicator', 'Data Value', 'State Name'])
 opioidCrisisJson = json.loads(opioidCrisisData.to_json(orient='records'))
 

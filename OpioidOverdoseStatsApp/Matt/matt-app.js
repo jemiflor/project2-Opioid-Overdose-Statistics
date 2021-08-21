@@ -31,7 +31,7 @@ d3.selectAll('#chart-3-select-year, #chart-3-select-month')
 });
 
 // handle chart 4 filters on change event
-d3.selectAll('#chart-3-select-year, #chart-3-select-month, #chart-3-select-opioid')
+d3.selectAll('#chart-4-select-year, #chart-4-select-month, #chart-4-select-opioid')
   .on('change', function() {    
     createChart4Visualization();
 });
@@ -57,7 +57,7 @@ function createChart1Visualization(){
   
   d3.json(chart1DataUrl).then(function(records) {
 
-    // Replace this block with visualization
+    // Replace this block with visualization --- MATT
     // #########################################################################
     // Just rendering 3 rows to show how to get data for visualization
     
@@ -82,16 +82,17 @@ function createChart2Visualization(){
   var stateFilter = d3.select("#chart-2-select-state").property('value');
 
   var chart2DataUrl = chart2BaseUrl;  
-  if (monthFilter != "0") {
-    chart2BaseUrl = `${chart2BaseUrl}/month/${monthFilter}`;
-  }
   if (stateFilter != "0") {
-    chart2BaseUrl = `${chart2BaseUrl}/state/${stateFilter}`;
+    chart2DataUrl = `${chart2DataUrl}/state/${stateFilter}`;
   }
+  if (monthFilter != "0") {
+    chart2DataUrl = `${chart2DataUrl}/month/${monthFilter}`;
+  }
+ 
   
   d3.json(chart2DataUrl).then(function(records) {
 
-    // Replace this block with visualization
+    // Replace this block with visualization  -- IRINIA
     // #########################################################################
     // Just rendering 3 rows to show how to get data for visualization
     
@@ -114,37 +115,53 @@ function createChart2Visualization(){
 }
 
 function createChart3Visualization(){
-  // var chart2BaseUrl = `${baseFlaskAppCloudUrl}deathCountsByState`
+  var chart3BaseUrl = `${baseFlaskAppCloudUrl}deathCountsByState`
   
-  // var monthFilter = d3.select("#chart-2-select-month").property('value');
-  // var stateFilter = d3.select("#chart-2-select-state").property('value');
+  var yearFilter = d3.select("#chart-3-select-year").property('value');
+  var monthFilter = d3.select("#chart-3-select-month").property('value');
 
-  // var chart2DataUrl = chart2BaseUrl;  
-  // if (monthFilter != "0") {
-  //   chart2BaseUrl = `${chart2BaseUrl}/month/${monthFilter}`;
-  // }
-  // if (stateFilter != "0") {
-  //   chart2BaseUrl = `${chart2BaseUrl}/state/${stateFilter}`;
-  // }
+  var chart3DataUrl = chart3BaseUrl;  
+  if (yearFilter != "0") {
+    chart3DataUrl = `${chart3DataUrl}/year/${yearFilter}`;
+  }
+  if (monthFilter != "0") {
+    chart3DataUrl = `${chart3DataUrl}/month/${monthFilter}`;
+  }
+ 
   
-  // d3.json(chart2DataUrl).then(function(records) {
+  d3.json(chart3DataUrl).then(function(records) {
 
-  //   // Replace this block with visualization
-  //   // #########################################################################
-  //   // Just rendering 3 rows to show how to get data for visualization
+    // Replace this block with visualization  -- IRINIA
+    // #########################################################################
+    // Just rendering 3 rows to show how to get data for visualization     
+
+    // Trick Trick yuck --- Columns as rows - transpose
+
+    var filteredOverdose = records.filter(function(d){
+      return d["Indicator"] === "Number of Drug Overdose Deaths"
+    })
+
+    var filteredTotalDeaths = records.filter(function(d){
+      return d["Indicator"] === "Number of Deaths"
+    })
+
+    var chart3RowsContainer = d3.select("#chart-3-rows")
+    chart3RowsContainer.html("");
+    for (var i = 0; i < (filteredOverdose.length >= 3 ? 3 : filteredOverdose.length); i++) {
+      
+      var row = chart3RowsContainer.append("tr");
+      var yearCell = row.append("td");
+      yearCell.text(filteredTotalDeaths[i].State);
+
+      var totalDeathCountCell = row.append("td");
+      totalDeathCountCell.text(filteredTotalDeaths[i].OverdoseDeathCount);    
+      
+      var overdoseDeathCountCell = row.append("td");
+      overdoseDeathCountCell.text(filteredOverdose[i].OverdoseDeathCount);       
+    }
+    // ########################################################################
     
-  //   var chart1RowsContainer = d3.select("#chart-2-rows")
-  //   chart1RowsContainer.html("");
-  //   for (var i = 0; i < (records.length >= 3 ? 3 : records.length); i++) {
-  //     var row = chart1RowsContainer.append("tr");
-  //     Object.entries(records[i]).forEach(([key, value]) => {
-  //       var cell = row.append("td");
-  //       cell.text(value);
-  //     });
-  //   }
-  //   // ########################################################################
-    
-  // });
+  });
 
 }
 

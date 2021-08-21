@@ -131,7 +131,7 @@ function createChart3Visualization(){
   
   d3.json(chart3DataUrl).then(function(records) {
 
-    // Replace this block with visualization  -- IRINIA
+    // Replace this block with visualization  -- PAtrick
     // #########################################################################
     // Just rendering 3 rows to show how to get data for visualization     
 

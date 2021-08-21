@@ -276,7 +276,7 @@ def get_death_counts_by_State(month, year):
     # Reference: https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/
     # match by indicator - default to overdose death count indicator
     if year != None:
-        match["$match"]["year"] = int(year)
+        match["$match"]["Year"] = int(year)
 
     # if month is provided match month 
     # month column in our collection is the name of the month

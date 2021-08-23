@@ -312,23 +312,18 @@ def get_death_counts_by_State(month, year):
     # if statement to divide sum of the "per 1000" indicators
     results = []
     for record in cursor:
-        if record['_id']["Indicator"] == "Death Per 1000 Population":
-            results.append({
-                "State": record["_id"]["State"], 
-                "Indicator":  record["_id"]["Indicator"], 
-                "OverdoseDeathCount" : record["Death Count"] / 72
-            })
-        elif record['_id']["Indicator"] == "Overdose Death Per 1000 Total Death":
-            results.append({
-                "State": record["_id"]["State"], 
-                "Indicator":  record["_id"]["Indicator"], 
-                "OverdoseDeathCount" : record["Death Count"] / 72
-            })
-        else:
-            results.append({
+        condition1 = record['_id']["Indicator"] == "Death Per 1000 Population"
+        condition2 = record['_id']["Indicator"] == "Overdose Death Per 1000 Total Death"
+        
+        deathCount = record["Death Count"]        
+        if condition1 or condition2:
+            deathCount = record["Death Count"] / 72        
+
+        results.append({
             "State": record["_id"]["State"], 
             "Indicator":  record["_id"]["Indicator"], 
-            "OverdoseDeathCount" : record["Death Count"]})
+            "OverdoseDeathCount" : deathCount
+        })
 
     # jsonify the results list and return the response
     return jsonify(results)                                             

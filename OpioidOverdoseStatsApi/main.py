@@ -53,7 +53,7 @@ def welcome():
 @app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>", defaults={'indicator':"Number of Drug Overdose Deaths"})
 @app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/indicator/<indicator>", defaults={'month':None})
 @app.route("/api/v1.0/opioidstats/deathcounts/month/<month>indicator/<indicator>", defaults={'year':None})
-@app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>/<indicator>")
+@app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>/indicator/<indicator>")
 def get_death_counts(year, month, indicator):
     
     # mongoDbQuery - Building query pipeline

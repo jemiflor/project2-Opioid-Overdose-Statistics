@@ -10,12 +10,18 @@ function createVisualizations(){
   createChart2Visualization()
   createChart3Visualization()
   createChart4Visualization()
+  createChart5Visualization()
 }
 
 // handle chart 1 filters on change event
 d3.selectAll('#chart-1-select-year, #chart-1-select-month, #chart-1-select-state')
   .on('change', function() {    
     createChart1Visualization();
+});
+//+chart 5 (Matt Added)
+d3.selectAll('#chart-1-select-year, #chart-1-select-month, #chart-1-select-state')
+  .on('change', function() {    
+    createChart5Visualization();
 });
 
 // handle chart 2 filters on change event
@@ -223,3 +229,47 @@ function createChart4Visualization(){
   }
 
 }
+
+   // ########################################################################
+//Chart 5
+/*function createChart5Visualization(){
+  //createChart5Visualization(){
+    
+   var chart5BaseUrl = 'http://127.0.0.1:5000/api/v1.0/opioidstats/deathCountsBySummary' //`${baseFlaskAppCloudUrl}deathCountsBySummary`
+   console.log('chart5:',chart5BaseUrl)
+  /*console.log(chart5BaseUrl)
+    var yearFilter = d3.select("#chart-1-select-year").property('value');
+    var monthFilter = d3.select("#chart-1-select-month").property('value');
+    var stateFilter = d3.select("#chart-1-select-state").property('value');
+  
+    var chart5DataUrl = chart5BaseUrl;
+    if (yearFilter != "0") {
+      chart5DataUrl = `${chart5DataUrl}/year/${yearFilter}`;
+    }
+    if (monthFilter != "0") {
+      chart5DataUrl = `${chart5DataUrl}/month/${monthFilter}`;
+    }
+    if (stateFilter != "0") {
+      chart5DataUrl = `${chart5DataUrl}/state/${stateFilter}`;
+    }
+    
+    d3.json(chart5BaseUrl).then(function(records) {
+    console.log("rec:",records)
+    
+      // Replace this block with visualization --- MATT
+      // #########################################################################
+      // Just rendering 3 rows to show how to get data for visualization
+      
+      var chart5RowsContainer = d3.select("#chart-5-rows")
+      chart5RowsContainer.html("");
+      for (var i = 0; i < (records.length); i++) {
+        var row = chart5RowsContainer.append("tr");
+        Object.entries(records[i]).forEach(([key, value]) => {
+          var cell = row.append("td");
+          cell.text(value);
+        });
+      }
+      // ########################################################################
+      
+    });
+  }

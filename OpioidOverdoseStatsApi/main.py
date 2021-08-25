@@ -347,11 +347,7 @@ def get_death_counts_by_Summary(year, month, state):
                 "$in": [
                     "Number of Deaths",
                     "Number of Drug Overdose Deaths",
-                    "Population",
-                    "Overdose Death Per 1000 Population",
-                    "Death Per 1000 Population",
-                    "Percent with drugs specified",
-                    "Overdose Death Per 1000 Total Death"
+                    "Population"
                 ]
             }
         }

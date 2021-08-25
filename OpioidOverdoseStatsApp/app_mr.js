@@ -60,6 +60,7 @@ function createChart1Visualization(){
   if (stateFilter != "0") {
     chart1DataUrl = `${chart1DataUrl}/state/${stateFilter}`;
   }
+  console.log("url1 =",chart1DataUrl)
   
   d3.json(chart1DataUrl).then(function(records) {
 
@@ -163,13 +164,16 @@ function createChart2Visualization(){
 
     var chart2RowsContainer = d3.select("#chart-2-rows")
     chart2RowsContainer.html("");
-    for (var i = 0; i < (filtered.length >= 3 ? 3 : filtered.length); i++) {
+    for (var i = 0; i < (records.length); i++) {
       var row = chart2RowsContainer.append("tr");
       var yearCell = row.append("td");
-      yearCell.text(filtered[i].Year);
+      yearCell.text(filtered[i].year);
       var countCell = row.append("td");
       countCell.text(filtered[i].OverdoseDeathCount);     
     }
+
+    
+    //console.log(countCell)
     // ########################################################################
     
   });
@@ -189,7 +193,7 @@ function createChart3Visualization(){
     chart3DataUrl = `${chart3DataUrl}/month/${monthFilter}`;
   }
  
-  
+  console.log('url=',chart3DataUrl)
   d3.json(chart3DataUrl).then(function(records) {
 
     // Replace this block with visualization  -- IRINIA
@@ -235,11 +239,12 @@ function createChart4Visualization(){
 }
 
 //Chart 5
-function createChart5Visualization(){
+/*function createChart5Visualization(){
   //createChart5Visualization(){
     
-    var chart5BaseUrl = `${baseFlaskAppCloudUrl}deathCountsBySummary`
-  console.log(chart5BaseUrl)
+   var chart5BaseUrl = 'http://127.0.0.1:5000/api/v1.0/opioidstats/deathCountsBySummary' //`${baseFlaskAppCloudUrl}deathCountsBySummary`
+   console.log('chart5:',chart5BaseUrl)
+  /*console.log(chart5BaseUrl)
     var yearFilter = d3.select("#chart-1-select-year").property('value');
     var monthFilter = d3.select("#chart-1-select-month").property('value');
     var stateFilter = d3.select("#chart-1-select-state").property('value');
@@ -255,8 +260,9 @@ function createChart5Visualization(){
       chart5DataUrl = `${chart5DataUrl}/state/${stateFilter}`;
     }
     
-    d3.json(chart5DataUrl).then(function(records) {
-    console.log(records)
+    d3.json(chart5BaseUrl).then(function(records) {
+    console.log("rec:",records)
+    
       // Replace this block with visualization --- MATT
       // #########################################################################
       // Just rendering 3 rows to show how to get data for visualization

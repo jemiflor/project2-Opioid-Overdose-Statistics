@@ -10,12 +10,18 @@ function createVisualizations(){
   createChart2Visualization()
   createChart3Visualization()
   createChart4Visualization()
+  createChart5Visualization()
 }
 
 // handle chart 1 filters on change event
 d3.selectAll('#chart-1-select-year, #chart-1-select-month, #chart-1-select-state')
   .on('change', function() {    
     createChart1Visualization();
+});
+//+chart 5 (Matt Added)
+d3.selectAll('#chart-1-select-year, #chart-1-select-month, #chart-1-select-state')
+  .on('change', function() {    
+    createChart5Visualization();
 });
 
 // handle chart 2 filters on change event
@@ -69,9 +75,18 @@ function createChart1Visualization(){
       Object.entries(records[i]).forEach(([key, value]) => {
         var cell = row.append("td");
         cell.text(value);
-        // add switch for selecting
+        //console.log(typeof value)
+        //console.log(key)
+        //Add Key to one list and value to another list
+        //const [indicator_split,death_split] = value.split(")")
+        //const indicator_split = split_value[0]
+        //const death_split = split_value[1]
+        //if (key == "Indicator") {indicator_list = indicator_list + value}
+        //if (key == "OverdoseDeathCount") {death_list = death_list + value}
+        //indicator_list = indicator_list+key+value //indicator.append(key)
+        //death_list = death_list+key+value
         switch (key) {
-          case "Indicator":
+         case "Indicator":
               indicator_list.push(value);
               break;
           case "OverdoseDeathCount":
@@ -82,35 +97,44 @@ function createChart1Visualization(){
               break;
       } // close switch statement
       });
-    }
-         // Create the Trace
-         console.log(indicator_list)
-         var trace1 = {
-           x: death_list,
-           y: indicator_list,
-           //labels: indicator_list,
-           type: "bar",
-           orientation: 'h',
-         };
-   //console.log(trace1)
-         // Create the data array for the plot
-         var data = [trace1];
-   //console.log(data)
-         // Define the plot layout
-         var layout = {
-           height: 500,
-           width: 800,
-           title: "Indicator vs. Deaths",
-           xaxis: { title: "No. of Deaths" },
-           yaxis: { title: "Indicator" }
-         };
-       
-     // Plot the chart to a div tag with id "bar-plot"
-         Plotly.newPlot("bar-plot", data, layout);
-    // ########################################################################
+    };
+  
     
-  });
-}
+console.log(indicator_list)
+//console.log(typeof indicator_list)
+console.log(death_list)
+//console.log(typeof death_list)
+        
+      // Create the Trace
+      console.log(indicator_list)
+      var trace1 = {
+        x: death_list,
+        y: indicator_list,
+        //labels: indicator_list,
+        type: "bar",
+        orientation: 'h',
+      };
+console.log(trace1)
+      // Create the data array for the plot
+      var data = [trace1];
+console.log(data)
+      // Define the plot layout
+      var layout = {
+        height: 500,
+        width: 700,
+        title: "Indicator vs. Deaths",
+        xaxis: { title: "No. of Deaths" },
+        yaxis: { title: "Indicator" }
+      };
+    
+  // Plot the chart to a div tag with id "bar-plot"
+      Plotly.newPlot("bar-plot", data, layout);
+
+
+    // ########################################################################
+    //};
+  }
+  )};
 
 function createChart2Visualization(){
   var chart2BaseUrl = `${baseFlaskAppCloudUrl}deathCountsByYear`
@@ -196,30 +220,87 @@ function createChart3Visualization(){
       var overdoseDeathCountCell = row.append("td");
       overdoseDeathCountCell.text(filteredOverdose[i].OverdoseDeathCount);       
     }
-    // ########################################################################
-    
-  });
+//#######################################################
 
+  
+  
+      // ########################################################################
+      
+    });
+  
 }
 
 function createChart4Visualization(){
-  var chart4BaseUrl = `${baseFlaskAppCloudUrl}deathcounts`
-  
-  var yearFilter = d3.select("#chart-4-select-year").property('value');
-  var monthFilter = d3.select("#chart-4-select-month").property('value');
-  var opioidFilter = d3.select("#chart-4-select-opioid").property('value');
-
-  var chart4DataUrl = chart4BaseUrl;  
-  if (yearFilter != "0") {
-    chart4DataUrl = `${chart4DataUrl}/year/${yearFilter}`;
-  }
-
-  if (monthFilter != "0") {
-    chart4DataUrl = `${chart4DataUrl}/month/${monthFilter}`;
-  }
-
-  if (opioidFilter != "0") {
-    chart4DataUrl = `${chart4DataUrl}/month/${opioidFilter}`;
-  }
 
 }
+
+//Chart 5
+function createChart5Visualization(){
+  //createChart5Visualization(){
+    
+    var chart5BaseUrl = `${baseFlaskAppCloudUrl}deathCountsBySummary`
+  console.log(chart5BaseUrl)
+    var yearFilter = d3.select("#chart-1-select-year").property('value');
+    var monthFilter = d3.select("#chart-1-select-month").property('value');
+    var stateFilter = d3.select("#chart-1-select-state").property('value');
+  
+    var chart5DataUrl = chart5BaseUrl;
+    if (yearFilter != "0") {
+      chart5DataUrl = `${chart5DataUrl}/year/${yearFilter}`;
+    }
+    if (monthFilter != "0") {
+      chart5DataUrl = `${chart5DataUrl}/month/${monthFilter}`;
+    }
+    if (stateFilter != "0") {
+      chart5DataUrl = `${chart5DataUrl}/state/${stateFilter}`;
+    }
+    
+    d3.json(chart5DataUrl).then(function(records) {
+    console.log(records)
+      // Replace this block with visualization --- MATT
+      // #########################################################################
+      // Just rendering 3 rows to show how to get data for visualization
+      
+      var chart5RowsContainer = d3.select("#chart-5-rows")
+      chart5RowsContainer.html("");
+      for (var i = 0; i < (records.length); i++) {
+        var row = chart5RowsContainer.append("tr");
+        Object.entries(records[i]).forEach(([key, value]) => {
+          var cell = row.append("td");
+          cell.text(value);
+        });
+      }
+      // ########################################################################
+      
+    });
+  }
+
+
+// var opioidData = "https://bccloudflask.uc.r.appspot.com/api/v1.0/opioidstats/deathcounts/year/2018"
+
+// // Perform a GET request to the query URL
+// d3.json(opioidData).then(function(data) {
+//   createVisualization(data)
+// });
+
+// function createVisualization(data) {
+
+//     // get hold of the tbody table element
+//     var tbody = d3.select('tbody')
+
+//     data.forEach((ufosighting) => {
+
+//         // append row to tbody for each json object in the json data array
+//         var row = tbody.append("tr");
+
+//         //append a cell to each table row for every key value in the json object in the json dat array
+//         Object.entries(ufosighting).forEach(([key, value]) => {
+//           var cell = row.append("td");
+//           cell.text(value);
+//         });
+
+//       });
+
+// }
+
+

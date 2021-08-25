@@ -60,53 +60,16 @@ function createChart1Visualization(){
     // Replace this block with visualization --- MATT
     // #########################################################################
     // Just rendering 3 rows to show how to get data for visualization
-    indicator_list = [];
-    death_list = [];
+    
     var chart1RowsContainer = d3.select("#chart-1-rows")
     chart1RowsContainer.html("");
-    for (var i = 0; i < (records.length); i++) {
+    for (var i = 0; i < (records.length >= 3 ? 3 : records.length); i++) {
       var row = chart1RowsContainer.append("tr");
       Object.entries(records[i]).forEach(([key, value]) => {
         var cell = row.append("td");
         cell.text(value);
-        // add switch for selecting
-        switch (key) {
-          case "Indicator":
-              indicator_list.push(value);
-              break;
-          case "OverdoseDeathCount":
-              death_list.push(value);
-              break;
-              // case
-          default:
-              break;
-      } // close switch statement
       });
     }
-         // Create the Trace
-         console.log(indicator_list)
-         var trace1 = {
-           x: death_list,
-           y: indicator_list,
-           //labels: indicator_list,
-           type: "bar",
-           orientation: 'h',
-         };
-   //console.log(trace1)
-         // Create the data array for the plot
-         var data = [trace1];
-   //console.log(data)
-         // Define the plot layout
-         var layout = {
-           height: 500,
-           width: 800,
-           title: "Indicator vs. Deaths",
-           xaxis: { title: "No. of Deaths" },
-           yaxis: { title: "Indicator" }
-         };
-       
-     // Plot the chart to a div tag with id "bar-plot"
-         Plotly.newPlot("bar-plot", data, layout);
     // ########################################################################
     
   });
@@ -168,7 +131,7 @@ function createChart3Visualization(){
   
   d3.json(chart3DataUrl).then(function(records) {
 
-    // Replace this block with visualization  -- IRINIA
+    // Replace this block with visualization  -- Patrick
     // #########################################################################
     // Just rendering 3 rows to show how to get data for visualization     
 
@@ -203,23 +166,36 @@ function createChart3Visualization(){
 }
 
 function createChart4Visualization(){
-  var chart4BaseUrl = `${baseFlaskAppCloudUrl}deathcounts`
-  
-  var yearFilter = d3.select("#chart-4-select-year").property('value');
-  var monthFilter = d3.select("#chart-4-select-month").property('value');
-  var opioidFilter = d3.select("#chart-4-select-opioid").property('value');
-
-  var chart4DataUrl = chart4BaseUrl;  
-  if (yearFilter != "0") {
-    chart4DataUrl = `${chart4DataUrl}/year/${yearFilter}`;
-  }
-
-  if (monthFilter != "0") {
-    chart4DataUrl = `${chart4DataUrl}/month/${monthFilter}`;
-  }
-
-  if (opioidFilter != "0") {
-    chart4DataUrl = `${chart4DataUrl}/month/${opioidFilter}`;
-  }
 
 }
+
+
+
+
+// var opioidData = "https://bccloudflask.uc.r.appspot.com/api/v1.0/opioidstats/deathcounts/year/2018"
+
+// // Perform a GET request to the query URL
+// d3.json(opioidData).then(function(data) {
+//   createVisualization(data)
+// });
+
+// function createVisualization(data) {
+
+//     // get hold of the tbody table element
+//     var tbody = d3.select('tbody')
+
+//     data.forEach((ufosighting) => {
+
+//         // append row to tbody for each json object in the json data array
+//         var row = tbody.append("tr");
+
+//         //append a cell to each table row for every key value in the json object in the json dat array
+//         Object.entries(ufosighting).forEach(([key, value]) => {
+//           var cell = row.append("td");
+//           cell.text(value);
+//         });
+
+//       });
+
+// }
+

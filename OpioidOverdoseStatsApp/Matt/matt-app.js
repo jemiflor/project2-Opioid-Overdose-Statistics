@@ -68,12 +68,54 @@ function createChart1Visualization(){
       Object.entries(records[i]).forEach(([key, value]) => {
         var cell = row.append("td");
         cell.text(value);
+        switch (key) {
+          case "Indicator":
+              indicator_list.push(value);
+              break;
+          case "OverdoseDeathCount":
+              death_list.push(value);
+              break;
+              // case
+          default:
+              break;
+      } // close switch statement
+      });
+    };
+  
+    
+//console.log(indicator_list)
+//console.log(typeof indicator_list)
+//console.log(death_list)
+//console.log(typeof death_list)
+        
+      // Create the Trace
+      console.log(indicator_list)
+      var trace1 = {
+        x: death_list,
+        y: indicator_list,
+        //labels: indicator_list,
+        type: "bar",
+        orientation: 'h',
+      };
+//console.log(trace1)
+      // Create the data array for the plot
+      var data = [trace1];
+//console.log(data)
+      // Define the plot layout
+      var layout = {
+        height: 500,
+        width: 700,
+        title: "Indicator vs. Deaths",
+        xaxis: { title: "No. of Deaths" },
+        yaxis: { title: "Indicator" }
+      };
+    
+  // Plot the chart to a div tag with id "bar-plot"
+      Plotly.newPlot("bar-plot", data, layout);
+
       });
     }
     // ########################################################################
-    
-  });
-}
 
 function createChart2Visualization(){
   var chart2BaseUrl = `${baseFlaskAppCloudUrl}deathCountsByYear`

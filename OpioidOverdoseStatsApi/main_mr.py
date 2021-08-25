@@ -53,7 +53,7 @@ def welcome():
 @app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>", defaults={'indicator':"Number of Drug Overdose Deaths"})
 @app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/indicator/<indicator>", defaults={'month':None})
 @app.route("/api/v1.0/opioidstats/deathcounts/month/<month>indicator/<indicator>", defaults={'year':None})
-@app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>/indicator/<indicator>")
+@app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>/<indicator>")
 def get_death_counts(year, month, indicator):
     
     # mongoDbQuery - Building query pipeline
@@ -312,18 +312,23 @@ def get_death_counts_by_State(month, year):
     # if statement to divide sum of the "per 1000" indicators
     results = []
     for record in cursor:
-        condition1 = record['_id']["Indicator"] == "Death Per 1000 Population"
-        condition2 = record['_id']["Indicator"] == "Overdose Death Per 1000 Total Death"
-        
-        deathCount = record["Death Count"]        
-        if condition1 or condition2:
-            deathCount = record["Death Count"] / 72        
-
-        results.append({
+        if record['_id']["Indicator"] == "Death Per 1000 Population":
+            results.append({
+                "State": record["_id"]["State"], 
+                "Indicator":  record["_id"]["Indicator"], 
+                "OverdoseDeathCount" : record["Death Count"] / 72
+            })
+        elif record['_id']["Indicator"] == "Overdose Death Per 1000 Total Death":
+            results.append({
+                "State": record["_id"]["State"], 
+                "Indicator":  record["_id"]["Indicator"], 
+                "OverdoseDeathCount" : record["Death Count"] / 72
+            })
+        else:
+            results.append({
             "State": record["_id"]["State"], 
             "Indicator":  record["_id"]["Indicator"], 
-            "OverdoseDeathCount" : deathCount
-        })
+            "OverdoseDeathCount" : record["Death Count"]})
 
     # jsonify the results list and return the response
     return jsonify(results)                                             
@@ -404,8 +409,6 @@ def get_death_counts_by_Summary(year, month, state):
 
     # jsonify the results list and return the response
     return jsonify(results)    
-
-################################################################
 
 if __name__ == '__main__':
     app.run(debug=True)

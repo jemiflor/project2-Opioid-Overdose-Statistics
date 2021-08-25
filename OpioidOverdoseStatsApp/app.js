@@ -19,7 +19,7 @@ d3.selectAll('#chart-1-select-year, #chart-1-select-month, #chart-1-select-state
     createChart1Visualization();
 });
 //+chart 5 (Matt Added)
-d3.selectAll('#chart-1-select-year, #chart-1-select-month, #chart-1-select-state')
+d3.selectAll('#chart-5-select-year, #chart-5-select-month, #chart-5-select-state')
   .on('change', function() {    
     createChart5Visualization();
 });
@@ -232,12 +232,12 @@ function createChart4Visualization(){
 
    // ########################################################################
 //Chart 5
-/*function createChart5Visualization(){
+function createChart5Visualization(){
   //createChart5Visualization(){
     
    var chart5BaseUrl = 'http://127.0.0.1:5000/api/v1.0/opioidstats/deathCountsBySummary' //`${baseFlaskAppCloudUrl}deathCountsBySummary`
    console.log('chart5:',chart5BaseUrl)
-  /*console.log(chart5BaseUrl)
+  console.log(chart5BaseUrl)
     var yearFilter = d3.select("#chart-1-select-year").property('value');
     var monthFilter = d3.select("#chart-1-select-month").property('value');
     var stateFilter = d3.select("#chart-1-select-state").property('value');

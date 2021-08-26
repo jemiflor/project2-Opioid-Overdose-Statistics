@@ -301,8 +301,8 @@ function createChart4Visualization(){
       // Run the onEachFeature function once for each piece of data in the array
       var overdoses = L.geoJSON(withOverdoses, {
         onEachFeature: (feature, layer) => layer.bindPopup(
-            "<h4>" + popupHeader + "</h4>" + 
-            "<hr><p>Deaths" + feature.properties.deathCount + "</p>"
+            "<h4>" + popupHeader + ": " + feature.properties.Name +"</h4>" + 
+            "<hr><p>Deaths :" + feature.properties.deathCount + "</p>"
         ),
         pointToLayer: (feature, coordinates) => new L.circle(
             coordinates, {

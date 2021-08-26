@@ -53,7 +53,7 @@ def welcome():
 @app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>", defaults={'indicator':"Number of Drug Overdose Deaths"})
 @app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/indicator/<indicator>", defaults={'month':None})
 @app.route("/api/v1.0/opioidstats/deathcounts/month/<month>indicator/<indicator>", defaults={'year':None})
-@app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>/<indicator>")
+@app.route("/api/v1.0/opioidstats/deathcounts/year/<year>/month/<month>/indicator/<indicator>")
 def get_death_counts(year, month, indicator):
     
     # mongoDbQuery - Building query pipeline
@@ -297,8 +297,7 @@ def get_death_counts_by_State(month, year):
                     "State": "$State",
                     "Indicator": "$Indicator"
                 },
-                "Death Count": { "$sum": "$Data Value"},
-                "PerDeathPop": { "$avg": "$Data Value"}
+                "Death Count": { "$sum": "$Data Value"}
             }
         },
         { "$sort" : { "State" : 1, "_id": 1 } }                                              
@@ -317,13 +316,13 @@ def get_death_counts_by_State(month, year):
             results.append({
                 "State": record["_id"]["State"], 
                 "Indicator":  record["_id"]["Indicator"], 
-                "OverdoseDeathCount" : record["PerDeathPop"]
+                "OverdoseDeathCount" : record["Death Count"] / 72
             })
         elif record['_id']["Indicator"] == "Overdose Death Per 1000 Total Death":
             results.append({
                 "State": record["_id"]["State"], 
                 "Indicator":  record["_id"]["Indicator"], 
-                "OverdoseDeathCount" : record["PerDeathPop"]
+                "OverdoseDeathCount" : record["Death Count"] / 72
             })
         else:
             results.append({

@@ -1,7 +1,12 @@
 * {
-
+    
     font-family: 'Oxygen', 'sans-serif';
     /* color:#616971; */
+}
+
+body, html, #map
+{
+  height: 88%;
 }
 
 .header h1{

@@ -276,6 +276,7 @@ function createChart3Visualization(){
    var layout = {
      height: 500,
      width: 700,
+     hovermode: "closest",
      title: "Total Deaths per Thousand Persons vs. Overdose Deaths per Thousand Deaths",
      xaxis: { title: "Overdose Deaths per 1000 Deaths"},
      yaxis: { title: "Total Deaths Per 1000 Persons" },

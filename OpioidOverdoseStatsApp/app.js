@@ -182,6 +182,8 @@ function createChart2Visualization(){
 })
 }
 
+
+// chart 3 viz
 function createChart3Visualization(){
   var chart3BaseUrl = `${baseFlaskAppCloudUrl}deathCountsByState`
   
@@ -196,14 +198,8 @@ function createChart3Visualization(){
     chart3DataUrl = `${chart3DataUrl}/month/${monthFilter}`;
   }
  
-  
+
   d3.json(chart3DataUrl).then(function(records) {
-
-    // Replace this block with visualization  -- IRINIA
-    // #########################################################################
-    // Just rendering 3 rows to show how to get data for visualization     
-
-    // Trick Trick yuck --- Columns as rows - transpose
 
     var filteredOverdose = records.filter(function(d){
       return d["Indicator"] === "Number of Drug Overdose Deaths"
@@ -213,10 +209,24 @@ function createChart3Visualization(){
       return d["Indicator"] === "Number of Deaths"
     })
 
+    var filteredPerDeaths = records.filter(function(d){
+      return d["Indicator"] === "Overdose Death Per 1000 Total Death"
+    })
+
+    var filteredPerPop = records.filter(function(d){
+      return d["Indicator"] === "Death Per 1000 Population"
+    }) 
+
+
+    total_deaths = []
+    od_deaths = []
+    states = []
+    perThouDeath = []
+    perThouPop = []
     var chart3RowsContainer = d3.select("#chart-3-rows")
     chart3RowsContainer.html("");
-    for (var i = 0; i < (filteredOverdose.length >= 3 ? 3 : filteredOverdose.length); i++) {
-      
+    for (var i = 0; i < filteredOverdose.length; i++) {
+
       var row = chart3RowsContainer.append("tr");
       var yearCell = row.append("td");
       yearCell.text(filteredTotalDeaths[i].State);
@@ -225,13 +235,57 @@ function createChart3Visualization(){
       totalDeathCountCell.text(filteredTotalDeaths[i].OverdoseDeathCount);    
       
       var overdoseDeathCountCell = row.append("td");
-      overdoseDeathCountCell.text(filteredOverdose[i].OverdoseDeathCount);       
-    }
-    // ########################################################################
+      overdoseDeathCountCell.text(filteredOverdose[i].OverdoseDeathCount);
+
+
+
+      var totalDeathCountCell = row.append("td");
+      totalDeathCountCell.text(filteredPerDeaths[i].OverdoseDeathCount);    
+      
+      var overdoseDeathCountCell = row.append("td");
+      overdoseDeathCountCell.text(filteredPerPop[i].OverdoseDeathCount); 
+
+      total_deaths.push(filteredTotalDeaths[i].OverdoseDeathCount);
+      od_deaths.push(filteredOverdose[i].OverdoseDeathCount);
+      states.push(filteredTotalDeaths[i].State);
+      perThouDeath.push(filteredPerDeaths[i].OverdoseDeathCount);
+      perThouPop.push(filteredPerPop[i].OverdoseDeathCount);
+
+     // console.log(filteredOverdose);     
+    };
     
+    var trace3 = {
+      x: perThouPop,
+      y : perThouDeath,
+      type: "scatter",
+      mode: "markers",
+      text: states,
+      marker: {
+        size: perThouDeath
+      }
+    };
+  //console.log(total_deaths);
+  //console.log(od_deaths);
+  //console.log(states);
+  //console.log(perThouPop);
+  //console.log(perThouDeath);
+
+   var data3 = [trace3];
+   console.log(data3);
+
+   var layout = {
+     height: 500,
+     width: 700,
+     title: "Total Deaths per Thousand Persons vs. Overdose Deaths per Thousand Deaths",
+     xaxis: { title: "Overdose Deaths per 1000 Deaths"},
+     yaxis: { title: "Total Deaths Per 1000 Persons" },
+   };
+
+  Plotly.newPlot("bubble", data3, layout);
+
   });
 
-}
+};
 
 function createChart4Visualization(){
   var chart4BaseUrl = `${baseFlaskAppCloudUrl}deathcounts`

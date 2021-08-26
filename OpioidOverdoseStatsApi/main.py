@@ -297,7 +297,8 @@ def get_death_counts_by_State(month, year):
                     "State": "$State",
                     "Indicator": "$Indicator"
                 },
-                "Death Count": { "$sum": "$Data Value"}
+                "Death Count": { "$sum": "$Data Value"},
+                "PerDeathPop": { "$avg": "$Data Value"}
             }
         },
         { "$sort" : { "State" : 1, "_id": 1 } }                                              
@@ -316,13 +317,13 @@ def get_death_counts_by_State(month, year):
             results.append({
                 "State": record["_id"]["State"], 
                 "Indicator":  record["_id"]["Indicator"], 
-                "OverdoseDeathCount" : record["Death Count"] / 72
+                "OverdoseDeathCount" : record["PerDeathPop"]
             })
         elif record['_id']["Indicator"] == "Overdose Death Per 1000 Total Death":
             results.append({
                 "State": record["_id"]["State"], 
                 "Indicator":  record["_id"]["Indicator"], 
-                "OverdoseDeathCount" : record["Death Count"] / 72
+                "OverdoseDeathCount" : record["PerDeathPop"]
             })
         else:
             results.append({
@@ -332,7 +333,7 @@ def get_death_counts_by_State(month, year):
         
 
     # jsonify the results list and return the response
-    return jsonify(results)                                             
+    return jsonify(results)                                                                                 
 
 ############################################################################################# 
 #############################################################################################

@@ -135,51 +135,26 @@ function createChart2Visualization(){
   
   d3.json(chart2DataUrl).then(function(records) {
 
+    // Replace this block with visualization  -- IRINIA
+    // #########################################################################
+    // Just rendering 3 rows to show how to get data for visualization
+    
     var filtered = records.filter(function(d){
       return d["Indicator"] === "Number of Drug Overdose Deaths"
     })
 
-    var year = [];
-    var death_list =[];
     var chart2RowsContainer = d3.select("#chart-2-rows")
     chart2RowsContainer.html("");
-    for (var i = 0; i < (filtered.length); i++) { 
+    for (var i = 0; i < (filtered.length >= 3 ? 3 : filtered.length); i++) {
       var row = chart2RowsContainer.append("tr");
       var yearCell = row.append("td");
       yearCell.text(filtered[i].Year);
       var countCell = row.append("td");
-      countCell.text(filtered[i].OverdoseDeathCount); 
-      year.push(filtered[i].Year);  
-      death_list.push(filtered[i].OverdoseDeathCount);
-
-
-
-     
-    
-    };
-    var trace2 = {
-      x: year,
-      y:death_list,
-      type:"line",
-      orientation:'h'
+      countCell.text(filtered[i].OverdoseDeathCount);     
     }
-
-       
-    var data = [trace2];
-    console.log(data)    
-
-
-    var layout = {
-    height:500,
-    width:700,
-    title: "Death Count by Year",
-    xaxis: {title: 'Number of Deaths'},
-    yaxis: {title: 'OverdoseDeathCount'}
-};
-
-  Plotly.newPlot('line-plot', data, layout);
+    // ########################################################################
     
-})
+  });
 }
 
 function createChart3Visualization(){
@@ -260,7 +235,7 @@ function createChart4Visualization(){
 function createChart5Visualization(){
   //createChart5Visualization(){
     
-   var chart5BaseUrl = `${baseFlaskAppCloudUrl}deathCountsBySummary`//'http://127.0.0.1:5000/api/v1.0/opioidstats/deathCountsBySummary' 
+   var chart5BaseUrl = 'http://127.0.0.1:5000/api/v1.0/opioidstats/deathCountsBySummary' //`${baseFlaskAppCloudUrl}deathCountsBySummary`
    console.log('chart5:',chart5BaseUrl)
     
   var yearFilter = d3.select("#chart-5-select-year").property('value');

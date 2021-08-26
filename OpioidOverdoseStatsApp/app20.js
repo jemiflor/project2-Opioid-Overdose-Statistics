@@ -197,10 +197,10 @@ function createChart3Visualization(){
       overdoseDeathCountCell.text(filteredOverdose[i].OverdoseDeathCount);
 
       var totalDeathCountCell = row.append("td");
-      totalDeathCountCell.text(filteredPerDeaths[i].OverdoseDeathCount);    
+      totalDeathCountCell.text(filteredPerDeaths[i].OverdoseDeathCount.toFixed(2));    
       
       var overdoseDeathCountCell = row.append("td");
-      overdoseDeathCountCell.text(filteredPerPop[i].OverdoseDeathCount); 
+      overdoseDeathCountCell.text(filteredPerPop[i].OverdoseDeathCount.toFixed(2)); 
 
       total_deaths.push(filteredTotalDeaths[i].OverdoseDeathCount);
       od_deaths.push(filteredOverdose[i].OverdoseDeathCount);
